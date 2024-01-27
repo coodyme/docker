@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    restart: always
+    ports:
+      - 9000:9000 
+      - 9443:9443
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PATH}/portainer:/data
+    network_mode: 'bridge'
+
+volumes:
+  portainer:
