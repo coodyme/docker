@@ -1,21 +1,30 @@
-version: "3.7"
+version: "3.8"
 
 services:
   portainer:
     container_name: portainer
     image: portainer/portainer-ce:latest
-    restart: always
+    command: -H unix:///var/run/docker.sock
+    restart: unless-stopped
     ports:
       - 9000:9000 
-      - 9443:9443
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=$TZ
+      - PUID=$PUID
+      - PGID=$PGID
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${PATH}/portainer:/data
-    network_mode: 'bridge'
+      - portainer:/data
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      portainer:
+
+networks:
+  portainer:
+    name: portainer
+    driver: bridge
 
 volumes:
   portainer:
+    name: portainer
