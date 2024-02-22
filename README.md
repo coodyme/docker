@@ -1,5 +1,5 @@
 # Docker 🐋
-This is my personal templates for Docker.
+Samples of Docker Compose applications useful for personal use.
 
 - [Healthchecks](https://docs.linuxserver.io/images/docker-healthchecks) - A watchdog for your cron jobs. It's a web server that listens for pings from your cron jobs, plus a web interface.
 - [Activepieces](https://github.com/activepieces/activepieces) - True zapier alternative.
