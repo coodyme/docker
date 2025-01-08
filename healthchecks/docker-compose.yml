@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  healthchecks:
+    image: lscr.io/linuxserver/healthchecks:latest
+    container_name: healthchecks
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - SITE_ROOT=${SITE_ROOT}
+      - SITE_NAME=${SITE_NAME}
+      - SUPERUSER_EMAIL=${SUPERUSER_EMAIL}
+      - SUPERUSER_PASSWORD=${SUPERUSER_PASSWORD}
+      - APPRISE_ENABLED=${APPRISE_ENABLED}
+      - DEBUG=${DEBUG}
+    volumes:
+      - ${DATA_DIR}/healthchecks/config:/config
+    ports:
+      - 8000:8000
+      - 2525:2525
+    restart: unless-stopped
+    networks:
+      - pegasus
+      
+volumes:
+  healthchecks:
+   name: healthchecks
+
+networks:
+  pegasus:
+    external: true

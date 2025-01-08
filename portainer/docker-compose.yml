@@ -1,0 +1,20 @@
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    command: -H unix:///var/run/docker.sock
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt/andromeda/docker/portainer:/data
+    security_opt:
+      - no-new-privileges:true
+    network_mode: bridge
+
+volumes:
+  portainer:
+    name: portainer

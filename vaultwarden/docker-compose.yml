@@ -1,0 +1,39 @@
+volumes:
+  vaultwarden:
+    name: vaultwarden
+
+services:
+  vaultwarden:
+    container_name: vaultwarden
+    image: vaultwarden/server:latest
+    restart: unless-stopped
+    ports:
+      - 8002:80
+      - 3012:3012
+    environment:
+      - TZ=$TZ
+      - WEBSOCKET_ENABLED=true
+      - DOMAIN=$DOMAIN
+      - LOGIN_RATELIMIT_MAX_BURST=10
+      - LOGIN_RATELIMIT_SECONDS=60
+      #- ADMIN_RATELIMIT_MAX_BURST=10
+      #- ADMIN_RATELIMIT_SECONDS=60
+      - SENDS_ALLOWED=false
+      - EMERGENCY_ACCESS_ALLOWED=true
+      - WEB_VAULT_ENABLED=true
+      #- ADMIN_TOKEN=$ADMIN_TOKEN
+      - INVITATIONS_ALLOWED=true
+      - SHOW_PASSWORD_HINT=false
+      - SIGNUPS_ALLOWED=true
+      - SMTP_HOST=$SMTP_HOST
+      - SMTP_FROM=$SMTP_FROM
+      - SMTP_FROM_NAME=$SMTP_FROM_NAME
+      - SMTP_SECURITY=$SMTP_SECURITY
+      - SMTP_PORT=$SMTP_PORT
+      - SMTP_USERNAME=$SMTP_USERNAME
+      - SMTP_PASSWORD=$SMTP_PASSWORD
+      - SMTP_AUTH_MECHANISM=$SMTP_AUTH_MECHANISM
+      - SIGNUPS_DOMAINS_WHITELIST=$SIGNUPS_DOMAINS_WHITELIST
+    volumes:
+      - ${DATA_DIR}:/data
+    network_mode: bridge

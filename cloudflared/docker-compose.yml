@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  cloudflared:
+    container_name: cloudflared
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    environment:
+      - TUNNEL_TOKEN=$TOKEN
+    network_mode: 'bridge'
+    command: tunnel --no-autoupdate run
+

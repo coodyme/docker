@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  duplicati:
+    container_name: duplicati
+    image: lscr.io/linuxserver/duplicati:2.0.7
+    restart: unless-stopped
+    ports:
+      - 8200:8200
+    volumes:
+      - ${DATA_DIR}/duplicati:/config
+      - ${BACKUPS_DIR}:/backups
+      - /:/source
+    environment:
+      - TZ=${TZ}
+      - PGID=${PGID}
+      - PUID=${PUID}
+    networks:
+      - pegasus
+    
+volumes:
+  duplicati:
+    name: duplicati
+  backups:
+    name: backups
+
+networks:
+  pegasus:
+    external: true

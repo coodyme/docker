@@ -2,8 +2,8 @@
 
 This repository contains a collection of ready-to-use **Docker Compose** files designed to help developers quickly set up and run various applications and development environments with minimal effort. Whether you’re spinning up a database, a full-stack web app, or other commonly used tools, these pre-configured files make the process seamless.
 
-- [Healthchecks](https://docs.linuxserver.io/images/docker-healthchecks) - A watchdog for your cron jobs. It's a web server that listens for pings from your cron jobs, plus a web interface.
 - [Activepieces](https://github.com/activepieces/activepieces) - True zapier alternative.
+- [Healthchecks](https://docs.linuxserver.io/images/docker-healthchecks) - A watchdog for your cron jobs. It's a web server that listens for pings from your cron jobs, plus a web interface.
 - [Cloudflared](https://github.com/WisdomSky/Cloudflared-web) - Cloudflare Tunnels in a Web UI
 - [Dash.](https://github.com/MauriceNino/dashdot) - A simple, modern server dashboard, primarily used by smaller private server
 - [Dockge](https://github.com/louislam/dockge) - Docker compose.yaml stack-oriented manager.
@@ -27,12 +27,33 @@ This repository contains a collection of ready-to-use **Docker Compose** files d
 - [VaultWarden](https://github.com/dani-garcia/vaultwarden) - All your passwords in your control!
 - [Wireguard](https://github.com/WeeJeWel/wg-easy/) - VPN server for your homeserver
 
-## Network
-To create a named Docker network for containers, run the following command:
+## Volume
+
+Before you run the Docker Compose file, you need to specify the volume path for the container. The volume path is the location where the container will store its data. You can specify the volume path in the `.env` file.
+
+For example, to specify the volume path for the `nextcloud` container, you can add the following line to the `.env` file:
 
 ```bash
-docker network create my-network --driver=bridge --subnet=172.172.0.0/16 --gateway=172.172.0.1
+VOLUME_PATH=/mnt/docker/nextcloud
 ```
 
-> In this case, the network is named `my-network`. You can change it to your desired name.
-# docker
+## Network
+
+To create a named Docker network for containers, specify the network name and options in the `docker-compose` file. 
+
+For example:
+
+```yaml
+networks:
+  default:
+    name: nextcloud
+    driver: bridge
+```
+
+> By defining the default network, all services in the Compose file will use this network unless explicitly assigned to another one.
+
+## Time Zone and PUID/PGID
+
+In some cases, you may need to specify the time zone and PUID/PGID for the container.
+
+You can specify the time zone and PUID/PGID for the container in the `.env` file. The time zone is the location where the container will run, and the PUID/PGID is the user ID and group ID of the container.
