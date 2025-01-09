@@ -39,7 +39,7 @@ VOLUME_PATH=/mnt/docker/nextcloud
 
 ## Network
 
-To create a named Docker network for containers, specify the network name and options in the `docker-compose` file. 
+To create a named Docker network for containers, specify the network name and options in the `docker-compose.yml` file. 
 
 For example:
 
@@ -50,7 +50,7 @@ networks:
     driver: bridge
 ```
 
-> By defining the default network, all services in the Compose file will use this network unless explicitly assigned to another one.
+> By defining the default network, all services in the  `docker-compose.yml` file will use this network unless explicitly assigned to another one.
 
 ## Time Zone and PUID/PGID
 
