@@ -16,7 +16,7 @@ services:
     environment:
       - TZ=$TZ
     volumes:
-      - ${VOLUME_PATH}/uptime-kuma/data:/app/data
+      - ${VOLUME_PATH}/data:/app/data
     security_opt:
       - no-new-privileges:true
     networks:

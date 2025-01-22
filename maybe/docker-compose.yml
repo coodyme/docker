@@ -4,14 +4,33 @@ networks:
     driver: bridge
 
 services:
+  maybe-postgres:
+    container_name: maybe-postgres
+    hostname: maybe-postgres
+    image: postgres:16
+    restart: unless-stopped
+    volumes:
+      - ${VOLUME_PATH}/postgres:/var/lib/postgresql/data
+    environment:
+      TZ: $TZ
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 5433:5433
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   maybe:
     container_name: maybe
+    hostname: maybe
     image: ghcr.io/maybe-finance/maybe:latest
-    volumes:
-      - ${VOLUME_PATH}/app-storage:/rails/storage
-    ports:
-      - 3000:3000
     restart: unless-stopped
+    volumes:
+      - ${VOLUME_PATH}/storage:/rails/storage
     environment:
       SELF_HOSTED: "true"
       RAILS_FORCE_SSL: "false"
@@ -30,24 +49,8 @@ services:
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SMTP_TLS_ENABLED: ${SMTP_TLS_ENABLED}
       EMAIL_SENDER: ${EMAIL_SENDER}
+    ports:
+      - 3000:3000
     depends_on:
       maybe-postgres:
         condition: service_healthy
-
-  maybe-postgres:
-    container_name: maybe-postgres
-    image: postgres:16
-    hostname: maybe-postgres
-    restart: unless-stopped
-    volumes:
-      - ${VOLUME_PATH}/postgres:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-

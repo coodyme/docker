@@ -1,16 +1,25 @@
-version: "3.8"
+networks:
+  default:
+    name: postgres
+    driver: bridge
 
 services:
   postgres:
     container_name: postgres
+    hostname: postgres
     image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - ${VOLUME_PATH}:/var/lib/postgresql/data
     environment:
-      - TZ=$TZ
-      - PUID=$PUID
-      - PGID=$PGID
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB} 
+      TZ: $TZ
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"
-    restart: always
+      - 5432:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
