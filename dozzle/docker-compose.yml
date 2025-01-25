@@ -1,12 +1,19 @@
-version: "3"
+networks:
+  default:
+    name: dozzle
+    driver: bridge
 
 services:
   dozzle:
     container_name: dozzle
+    hostname: dozzle
     image: amir20/dozzle:latest
-    restart: always
+    restart: unless-stopped
     volumes:
+      - ${VOLUME_PATH}:/data
       - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      DOZZLE_HOSTNAME: ${DOZZLE_HOSTNAME}
     ports:
       - 8080:8080
     healthcheck:
@@ -15,9 +22,4 @@ services:
       timeout: 30s
       retries: 5
       start_period: 30s
-    networks:
-      - pegasus
 
-networks:
-  pegasus:
-    external: true
