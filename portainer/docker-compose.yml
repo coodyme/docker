@@ -17,7 +17,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${VOLUME_PATH}:/data
+    environment:
+      - TZ=${TZ}
     ports:
       - 9443:9443
     security_opt:
       - no-new-privileges:true
+
+
