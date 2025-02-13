@@ -1,4 +1,4 @@
-# Docker 
+# Docker Compose
 
 This repository contains a collection of ready-to-use **Docker Compose** files designed to help developers quickly set up and run various applications and development environments with minimal effort. Whether you’re spinning up a database, a full-stack web app, or other commonly used tools, these pre-configured files make the process seamless.
 
